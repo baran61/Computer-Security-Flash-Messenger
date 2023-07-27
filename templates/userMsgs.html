@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- For CLoud Uncomment -->
+    <link rel="stylesheet"  href= "{{ url_for('static',filename='css/global.css') }}">
+    <script src="{{ url_for('static', filename='js/crypto.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+<!-- Load the JS SDK asynchronously -->
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+    <title>Message Inbox</title>
+
+</head>
+
+<body>
+    <div class="message-box">
+        <h2>Welcome</h2><h2 id ='userName'></h2>
+        <h5>Your Messages</h5>
+        <button onclick="javascript:logout();">Logout from Facebook</button>
+        <div><button onclick="navigate('createMsg')">Create New Message</button></div>
+        <br>
+        <div><button onclick="getMsgsForUser()">Get New Messages</button></div>
+        <div id="messages"></div>
+    </div>
+
+    <script>
+document.getElementById('userName').innerHTML = sessionStorage.getItem('loggedInUSername')
+
+        // window.addEventListener('beforeunload', (event) => {
+        //   event.preventDefault();
+        //   logout()
+        //   event.returnValue = '';
+        // });
+
+        // code is taken from https://developers.facebook.com/docs/facebook-login/web/
+    window.fbAsyncInit = function() {
+          FB.init({
+            appId      : '242013298711294',
+            cookie     : true,                     // Enable cookies to allow the server to access the session.
+            xfbml      : true,                     // Parse social plugins on this webpage.
+            version    : 'v6.0'           // Use this Graph API version for this call.
+          });
+
+        };
+
+        function  logout() {
+            FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
+                if (response.status === 'connected') { 
+                    clearPublicKey()
+            
+                    FB.logout(function(response) {
+              // user is now logged out
+
+              
+              window.location.assign("/");  
+              console.log('in  FB.logout logout method')
+            });
+          } 
+          
+          });
+           
+        }
+
+    </script>
+</body>
+
+</html>
